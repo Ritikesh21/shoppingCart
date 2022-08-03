@@ -2,6 +2,7 @@ const { response } = require("express")
 const { StatusCodes } = require("http-status-codes")
 const jwt = require('jsonwebtoken')
 const { secretKey } = require("../config")
+const { listIndexes } = require("../models/userModel")
 const userModel = require("../models/userModel")
 
 const createUser = async (req, res) => {
@@ -31,7 +32,7 @@ const loginUser = async (req, res) => {
         const token = jwt.sign({
             user : user._id
         }, secretKey, {expiresIn : "10h"})
-        //response.setHeader("x-api-key", token)
+        //response.set('authorization', token)
         return res.status(StatusCodes.OK)
         .json({status : true, data : {userId : user._id, token : token}})
     } catch (error) {
@@ -45,6 +46,7 @@ module.exports.loginUser = loginUser
 const getUser = async (req, res) => {
     try {
         const user = await userModel.findById(req.params.userId)
+        //console.log(req.headers['authorization'])
         return res.status(StatusCodes.OK)
         .json({status : true, data : user})
     } catch (error) {

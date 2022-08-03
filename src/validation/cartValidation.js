@@ -1,4 +1,4 @@
-const { body, param } = require("express-validator")
+const { body, param, header } = require("express-validator")
 const { StatusCodes } = require("http-status-codes")
 const userModel = require('../models/userModel')
 const productModel = require('../models/productModel')

@@ -1,4 +1,6 @@
-const {body, param} = require('express-validator')
+const {body, param, header} = require('express-validator')
+const jwt = require('jsonwebtoken')
+const { secretKey } = require('../config')
 const userModel = require('../models/userModel')
 
 const createUserValidation = [
@@ -194,8 +196,14 @@ const getUserValidation = [
   param('userId')
   .exists()
   .withMessage('userId is required.')
+  .bail()
   .isMongoId()
   .withMessage('Please enter the valid userId.')
+  .bail(),
+  header('authorization')
+  .exists()
+  .withMessage('Please login first')
+  .bail()
 ]
 
 module.exports.getUserValidation = getUserValidation

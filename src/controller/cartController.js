@@ -5,7 +5,6 @@ const productModel = require("../models/productModel")
 const createCart = async (req, res) => {
     try {
         const product = await productModel.findById(req.body.productId)
-        const total = (Number(product.price) * Number(req.body.quantity))
 
         const cart = await cartModel.findOne({userId : req.params.userId})
         if(!cart) {
@@ -54,19 +53,25 @@ const updateCart = async (req, res) => {
         const upd = cart.items.filter(obj => {
             if (obj.productId == req.body.productId){
                 if(Boolean(req.body.removeProduct) == true || Number(req.body.quantity) == 0){
+                    console.log(cart.totalItems)
+                    cart.totalItems -= 1
+                    cart.totalPrice -= (obj.quantity * product.price)
+                    console.log(cart.totalItems)
                     return false
                 }
                 console.log(req.body.quantity)
                 if(req.body.quantity){
                     console.log(obj.quantity)
                     const product = productModel.findById(obj.productId)
+                    console.log(cart.totalPrice)
                     cart.totalPrice = cart.totalPrice - (obj.quantity * product.price) + (Number(req.body.quantity) * product.price)
+                    console.log(cart.totalPrice)
                     obj.quantity = req.body.quantity
                 }
             }
             return true
         })
-        const data = await cartModel.findByIdAndUpdate(req.body.cartId, {items : upd}, {new : true})
+        const data = await cartModel.findByIdAndUpdate(req.body.cartId, {items : upd, totalItems : cart.totalItems, totalPrice : cart.totalPrice}, {new : true})
 
         return res.status(StatusCodes.OK).json({status : true, data : data})
 
