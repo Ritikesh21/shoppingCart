@@ -53,19 +53,13 @@ const updateCart = async (req, res) => {
         const upd = cart.items.filter(obj => {
             if (obj.productId == req.body.productId){
                 if(Boolean(req.body.removeProduct) == true || Number(req.body.quantity) == 0){
-                    console.log(cart.totalItems)
                     cart.totalItems -= 1
                     cart.totalPrice -= (obj.quantity * product.price)
-                    console.log(cart.totalItems)
                     return false
                 }
-                console.log(req.body.quantity)
                 if(req.body.quantity){
-                    console.log(obj.quantity)
                     const product = productModel.findById(obj.productId)
-                    console.log(cart.totalPrice)
                     cart.totalPrice = cart.totalPrice - (obj.quantity * product.price) + (Number(req.body.quantity) * product.price)
-                    console.log(cart.totalPrice)
                     obj.quantity = req.body.quantity
                 }
             }

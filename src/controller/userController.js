@@ -32,7 +32,6 @@ const loginUser = async (req, res) => {
         const token = jwt.sign({
             user : user._id
         }, secretKey, {expiresIn : "10h"})
-        //response.set('authorization', token)
         return res.status(StatusCodes.OK)
         .json({status : true, data : {userId : user._id, token : token}})
     } catch (error) {
@@ -46,7 +45,6 @@ module.exports.loginUser = loginUser
 const getUser = async (req, res) => {
     try {
         const user = await userModel.findById(req.params.userId)
-        //console.log(req.headers['authorization'])
         return res.status(StatusCodes.OK)
         .json({status : true, data : user})
     } catch (error) {

@@ -72,7 +72,8 @@ const orderValidation = [
     .withMessage('Invalid userId')
     .bail()
     .custom(value => {
-        return userModel.findById(value).then(() => {return true})
+        return userModel.findById(value)
+        .then(() => {return true})
         .catch(() => {return Promise.reject('User Not Found')})
     })
     .bail(),
@@ -84,7 +85,8 @@ const orderValidation = [
     .withMessage('Invalid orderId')
     .bail()
     .custom(value => {
-        return orderModel.findById(value).then(() => {return true})
+        return orderModel.findById(value)
+        .then(() => {return true})
         .catch(() => {return Promise.reject('Order Not Found')})
     })
     .bail()

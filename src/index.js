@@ -8,7 +8,6 @@ app.use(express.urlencoded({extended : true}))
 
 const multer = require('multer')
 app.use(multer().any())
-//JSON.stringify()
 
 const route = require('./routes/route')
 app.use('/', route)
